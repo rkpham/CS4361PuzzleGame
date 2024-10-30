@@ -24,7 +24,7 @@ public class GridManager : MonoBehaviour
     #endregion
 
     [SerializeField]
-    static Vector2 gridSize = new Vector2(1, 1);
+    static Vector3 gridSize = new Vector3(1, 1, 1);
 
     public List<GridObject> gridObjects = new List<GridObject>();
 
@@ -36,20 +36,21 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    // Converts an world position to a grid position (these are Vector2s!)
-    public static Vector2Int WorldToGrid(Vector2 worldPosition)
+    // Converts an world position to a grid position
+    public static Vector3Int WorldToGrid(Vector3 worldPosition)
     {
-        return Vector2Int.RoundToInt(worldPosition / gridSize);
+        Vector3 gridScaled = new Vector3(worldPosition.x / gridSize.x, worldPosition.y / gridSize.y, worldPosition.z / gridSize.z);
+        return Vector3Int.RoundToInt(gridScaled);
     }
 
     // Converts a grid position to a world position
-    public static Vector2 GridToWorld(Vector2Int gridPosition)
+    public static Vector3 GridToWorld(Vector3Int gridPosition)
     {
-        return gridPosition * gridSize;
+        return new Vector3(gridPosition.x * gridSize.x, gridPosition.y * gridSize.y, gridPosition.z * gridSize.z);
     }
 
     // Handles requests by GridObjects to move to a certain arbitrary global grid position.
-    public bool RequestMove(GridObject obj, Vector2Int pos)
+    public bool RequestMove(GridObject obj, Vector3Int pos)
     {
         if (gridObjects.Count == 0)
         {
@@ -57,7 +58,7 @@ public class GridManager : MonoBehaviour
             return true;
         }
 
-        Vector2Int relativePos = pos - obj.gridPosition;
+        Vector3Int relativePos = pos - obj.gridPosition;
         bool allowMove = true;
 
         for (int i = 0; i < gridObjects.Count; i++)

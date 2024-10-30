@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class GridObject : MonoBehaviour
 {
-    public Vector2Int gridPosition = Vector2Int.zero;
+    public Vector3Int gridPosition = Vector3Int.zero;
     void Start()
     {
         gridPosition = GridManager.WorldToGrid(transform.position);
@@ -19,7 +19,7 @@ public abstract class GridObject : MonoBehaviour
     // Essentially, this is what you want to happen when a "turn" has passed
     public abstract void Step();
 
-    public virtual void Move(Vector2Int pos)
+    public virtual void Move(Vector3Int pos)
     {
         gridPosition = pos;
     }
@@ -27,8 +27,6 @@ public abstract class GridObject : MonoBehaviour
     // Smoothly slides a GridObject to where it should be visually.
     protected void LerpToPosition()
     {
-        var horizPos = new Vector2(transform.position.x, transform.position.z);
-        var nextHorizPos = Vector2.Lerp(horizPos, gridPosition, 16.0f * Time.deltaTime);
-        transform.position = new Vector3(nextHorizPos.x, 0.0f, nextHorizPos.y);
+        transform.position = Vector3.Lerp(transform.position, gridPosition, 32.0f * Time.deltaTime);
     }
 }
