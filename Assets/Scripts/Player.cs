@@ -8,6 +8,7 @@ public class Player : GridObject
     // Update is called once per frame
     void Update()
     {
+        LerpToPosition();
         if (Input.GetKeyDown(KeyCode.D))
         {
             GridManager.instance.RequestMove(this, gridPosition + Vector2Int.right);
@@ -28,18 +29,11 @@ public class Player : GridObject
     }
     private void FixedUpdate()
     {
-        var horizPos = new Vector2(transform.position.x, transform.position.z);
-        var nextHorizPos = Vector2.Lerp(horizPos, gridPosition, 0.9f);
-        transform.position = new Vector3(nextHorizPos.x, 0.0f, nextHorizPos.y);
+        
     }
 
     override public void Step()
     {
 
-    }
-
-    override public void Move(Vector2Int pos)
-    {
-        gridPosition = pos;
     }
 }

@@ -10,18 +10,25 @@ public abstract class GridObject : MonoBehaviour
         gridPosition = GridManager.WorldToGrid(transform.position);
     }
 
-    void Update() {}
-
-    void FixedUpdate()
+    void Update()
     {
-        
+        LerpToPosition();
     }
 
-    // Step is usually called when the Player does an input.
+    // Step is usually called when the Player does an input
+    // Essentially, this is what you want to happen when a "turn" has passed
     public abstract void Step();
 
     public virtual void Move(Vector2Int pos)
     {
         gridPosition = pos;
+    }
+
+    // Smoothly slides a GridObject to where it should be visually.
+    protected void LerpToPosition()
+    {
+        var horizPos = new Vector2(transform.position.x, transform.position.z);
+        var nextHorizPos = Vector2.Lerp(horizPos, gridPosition, 16.0f * Time.deltaTime);
+        transform.position = new Vector3(nextHorizPos.x, 0.0f, nextHorizPos.y);
     }
 }

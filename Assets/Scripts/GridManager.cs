@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
+    // Code to make this a singleton (look up singleton design pattern)
     #region Singleton
     public static GridManager instance { get; private set; }
 
@@ -35,7 +36,7 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    // Converts an arbitrary X and Z position to a grid position
+    // Converts an world position to a grid position (these are Vector2s!)
     public static Vector2Int WorldToGrid(Vector2 worldPosition)
     {
         return Vector2Int.RoundToInt(worldPosition / gridSize);
@@ -47,6 +48,7 @@ public class GridManager : MonoBehaviour
         return gridPosition * gridSize;
     }
 
+    // Handles requests by GridObjects to move to a certain arbitrary global grid position.
     public bool RequestMove(GridObject obj, Vector2Int pos)
     {
         if (gridObjects.Count == 0)
@@ -56,26 +58,30 @@ public class GridManager : MonoBehaviour
         }
 
         Vector2Int relativePos = pos - obj.gridPosition;
+        bool allowMove = true;
 
         for (int i = 0; i < gridObjects.Count; i++)
         {
-            if (gridObjects[i].gridPosition == pos)
+            var gridObject = gridObjects[i];
+            if (gridObject.gridPosition == pos)
             {
-                if (gridObjects[i].GetType() == typeof(Wall))
+                if (gridObject.GetType() == typeof(Wall))
                 {
-                    return false;
+                    // Block things from moving into walls
+                    allowMove = false;
                 }
-                else
+                else if (gridObject.GetType() == typeof(Box))
                 {
-                    return RequestMove(gridObjects[i], pos + relativePos);
+                    // Recursively push blocks in a row if found
+                    allowMove = RequestMove(gridObject, gridObject.gridPosition + relativePos);
                 }
-            }
-            else
-            {
-                obj.Move(pos);
-                return true;
             }
         }
-        return false;
+        if (allowMove)
+        {
+            obj.Move(pos);
+        }
+
+        return allowMove;
     }
 }
