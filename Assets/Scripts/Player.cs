@@ -8,32 +8,43 @@ public class Player : GridObject
     // Update is called once per frame
     void Update()
     {
+        bool moved = false;
         LerpToPosition();
         if (Input.GetKeyDown(KeyCode.D))
         {
-            GridManager.instance.RequestMove(this, gridPosition + Vector3Int.right);
+            moved = GridManager.instance.RequestMove(this, gridPosition + Vector3Int.right);
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
-            GridManager.instance.RequestMove(this, gridPosition + Vector3Int.left);
+            moved = GridManager.instance.RequestMove(this, gridPosition + Vector3Int.left);
         }
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            GridManager.instance.RequestMove(this, gridPosition + Vector3Int.forward);
+            moved = GridManager.instance.RequestMove(this, gridPosition + Vector3Int.forward);
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            GridManager.instance.RequestMove(this, gridPosition + Vector3Int.back);
+            moved = GridManager.instance.RequestMove(this, gridPosition + Vector3Int.back);
+        }
+        // Spacebar to wait a step
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            GridManager.instance.Step();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            // Reset level
+        }
+
+        if (moved)
+        {
+            GridManager.instance.Step();
         }
     }
     private void FixedUpdate()
     {
         
-    }
-
-    override public void Step()
-    {
-
     }
 }

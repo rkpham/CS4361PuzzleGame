@@ -17,7 +17,10 @@ public abstract class GridObject : MonoBehaviour
 
     // Step is usually called when the Player does an input
     // Essentially, this is what you want to happen when a "turn" has passed
-    public abstract void Step();
+    public virtual void Step()
+    {
+        GridManager.instance.RequestMove(this, gridPosition + Vector3Int.down);
+    }
 
     public virtual void Move(Vector3Int pos)
     {

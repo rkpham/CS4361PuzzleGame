@@ -36,6 +36,12 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    // Called when the player makes a movement
+    public void Step()
+    {
+        foreach (GridObject obj in gridObjects) { obj.Step(); }
+    }
+
     // Converts an world position to a grid position
     public static Vector3Int WorldToGrid(Vector3 worldPosition)
     {
@@ -66,12 +72,17 @@ public class GridManager : MonoBehaviour
             var gridObject = gridObjects[i];
             if (gridObject.gridPosition == pos)
             {
-                if (gridObject.GetType() == typeof(Wall))
+                if (gridObject is Wall)
                 {
                     // Block things from moving into walls
                     allowMove = false;
                 }
-                else if (gridObject.GetType() == typeof(Box))
+                else if (gridObject is Player)
+                {
+                    // Block things from moving into walls
+                    allowMove = false;
+                }
+                else if (gridObject is Box)
                 {
                     // Recursively push blocks in a row if found
                     allowMove = RequestMove(gridObject, gridObject.gridPosition + relativePos);
