@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player
-    : MonoBehaviour
+public class Player : MonoBehaviour
 {
     private Vector3 PlayerMovementInput;
     private float Facing;
+    private bool Dead;
 
     [SerializeField] private Rigidbody PlayerBody;
     [SerializeField] private GameObject PlayerModel;
@@ -17,8 +17,18 @@ public class Player
     {
         PlayerMovementInput = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
 
-        MovePlayer();
-        RotateModel();
+        if (!Dead)
+        {
+            MovePlayer();
+            RotateModel();
+        }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Hazard")
+        {
+            Kill();
+        }
     }
 
     private void MovePlayer()
@@ -41,4 +51,16 @@ public class Player
         }
     }
 
+    public void Kill()
+    {
+        Dead = true;
+        EventManager.RaiseOnPlayerDied();
+        gameObject.SetActive(false);
+    }
+
+    public void Revive()
+    {
+        Dead = false;
+        gameObject.SetActive(true);
+    }
 }
