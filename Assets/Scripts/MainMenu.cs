@@ -1,21 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    void OnPlayPressed()
+    public void OnPlayPressed()
     {
-
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     void OnControlsPressed()
     {
-
+        Debug.Log("button pressed.");
     }
 
-    void OnQuitPressed()
+    public void OnQuitPressed()
     {
-
+        Application.Quit();
     }
 }
