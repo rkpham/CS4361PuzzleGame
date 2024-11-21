@@ -26,4 +26,9 @@ public class PlayerSpawner : MonoBehaviour
         player.transform.position = transform.position + new Vector3(0, 1, 0);
         player.Revive();
     }
+
+    private void OnDestroy()
+    {
+        EventManager.onPlayerDied -= PlayerDied;
+    }
 }
