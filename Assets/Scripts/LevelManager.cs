@@ -20,6 +20,7 @@ public class LevelManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         SceneManager.SetActiveScene(SceneManager.GetActiveScene());
+        Time.timeScale = 1f;
     }
 
     private void OnDestroy()
