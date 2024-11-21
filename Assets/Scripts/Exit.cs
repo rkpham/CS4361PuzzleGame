@@ -5,6 +5,8 @@ using static EventManager;
 
 public class Exit : MonoBehaviour
 {
+    private int NumButtonsActivated = 0;
+
     [SerializeField] private int RequiredButtons = 1;
     [SerializeField] private ParticleSystem ExitParticles;
 
@@ -25,12 +27,14 @@ public class Exit : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player" && ExitAllowed)
         {
-            Debug.Log("Finished level");
+            LevelManager.LoadNextLevel();
         }
     }
     private void ButtonActivated()
     {
-        if (LevelManager.NumButtonsActivated >= RequiredButtons)
+        NumButtonsActivated += 1;
+
+        if (NumButtonsActivated >= RequiredButtons)
         {
             ExitAllowed = true;
 
@@ -40,7 +44,9 @@ public class Exit : MonoBehaviour
     }
     private void ButtonDeactivated()
     {
-        if (LevelManager.NumButtonsActivated < RequiredButtons)
+        NumButtonsActivated -= 1;
+
+        if (NumButtonsActivated < RequiredButtons)
         {
             ExitAllowed = false;
 

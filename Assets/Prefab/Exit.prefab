@@ -4824,6 +4824,7 @@ GameObject:
   - component: {fileID: 5985002954029372584}
   - component: {fileID: 8425099330175983714}
   - component: {fileID: 7145632138550338438}
+  - component: {fileID: 3328934474069769469}
   m_Layer: 0
   m_Name: Exit
   m_TagString: Untagged
@@ -4911,3 +4912,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RequiredButtons: 1
   ExitParticles: {fileID: 7145632138656500738}
+--- !u!64 &3328934474069769469
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8064551943653736887}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2534964839176971238, guid: d534f097b9195ef4a83d0dc4feceec6e, type: 3}
