@@ -19,5 +19,11 @@ public class LevelManager : MonoBehaviour
     static public void LoadNextLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.SetActiveScene(SceneManager.GetActiveScene());
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.onCoinPickedUp -= CoinPickedUp;
     }
 }

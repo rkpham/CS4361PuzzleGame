@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
 
     private void RotateModel()
     {
-        if (PlayerBody.velocity.magnitude > .05f)
+        if (Mathf.Abs(PlayerBody.velocity.x) > 0.05f || Mathf.Abs(PlayerBody.velocity.z) > 0.05f)
         {
             float TargetFacing = Mathf.Rad2Deg * Mathf.Atan2(PlayerBody.velocity.x, PlayerBody.velocity.z);
             Facing = Mathf.LerpAngle(Facing, TargetFacing, Time.fixedDeltaTime * 8f);

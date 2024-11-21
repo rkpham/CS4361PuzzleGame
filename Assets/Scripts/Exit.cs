@@ -8,13 +8,12 @@ public class Exit : MonoBehaviour
     private int NumButtonsActivated = 0;
 
     [SerializeField] private int RequiredButtons = 1;
-    [SerializeField] private ParticleSystem ExitParticles;
 
     private bool ExitAllowed = false;
 
     private void Awake()
     {
-        var em = ExitParticles.emission;
+        var em = GetComponent<ParticleSystem>().emission;
         em.enabled = false;
     }
 
@@ -38,7 +37,7 @@ public class Exit : MonoBehaviour
         {
             ExitAllowed = true;
 
-            var em = ExitParticles.emission;
+            var em = GetComponent<ParticleSystem>().emission;
             em.enabled = true;
         }
     }
@@ -50,8 +49,14 @@ public class Exit : MonoBehaviour
         {
             ExitAllowed = false;
 
-            var em = ExitParticles.emission;
+            var em = GetComponent<ParticleSystem>().emission;
             em.enabled = false;
         }
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.onButtonActivated -= ButtonActivated;
+        EventManager.onButtonDeactivated -= ButtonDeactivated;
     }
 }
