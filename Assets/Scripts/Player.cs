@@ -28,9 +28,27 @@ public class Player : GridObject
     }
     private void FixedUpdate()
     {
+<<<<<<< Updated upstream
         var horizPos = new Vector2(transform.position.x, transform.position.z);
         var nextHorizPos = Vector2.Lerp(horizPos, gridPosition, 0.9f);
         transform.position = new Vector3(nextHorizPos.x, 0.0f, nextHorizPos.y);
+=======
+        PlayerMovementInput = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+
+        if (!Dead)
+        {
+            MovePlayer();
+            RotateModel();
+        }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Hazard")
+        {
+            Kill();
+            ScoreManager.Instance.addScore(-10);
+        }
+>>>>>>> Stashed changes
     }
 
     override public void Step()
