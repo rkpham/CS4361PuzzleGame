@@ -10,11 +10,33 @@ public class Exit : MonoBehaviour
     [SerializeField] private int RequiredButtons = 1;
 
     private bool ExitAllowed = false;
+    private ParticleSystem.EmissionModule emissionModule;
+    private AudioSource audioSource;
+
+    [SerializeField] private AudioClip activationSound;
+    [SerializeField] private AudioClip deactivationSound;
 
     private void Awake()
     {
         var em = GetComponent<ParticleSystem>().emission;
         em.enabled = false;
+        ParticleSystem particleSystem = GetComponent<ParticleSystem>();
+        audioSource = GetComponent<AudioSource>();
+
+        if (particleSystem != null)
+        {
+            emissionModule = particleSystem.emission;
+            emissionModule.enabled = false;
+        }
+        else
+        {
+            Debug.LogWarning("Exit: No ParticleSystem found.");
+        }
+
+        if (audioSource == null)
+        {
+            Debug.LogError("Exit: No AudioSource component found.");
+        }
     }
 
     private void OnEnable()
@@ -40,6 +62,7 @@ public class Exit : MonoBehaviour
 
             var em = GetComponent<ParticleSystem>().emission;
             em.enabled = true;
+            PlaySound(activationSound);
         }
     }
     private void ButtonDeactivated()
@@ -52,10 +75,24 @@ public class Exit : MonoBehaviour
 
             var em = GetComponent<ParticleSystem>().emission;
             em.enabled = false;
+            PlaySound(deactivationSound);
+        }
+    }
+    private void PlaySound(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+        {
+            audioSource.PlayOneShot(clip);
         }
     }
 
     private void OnDestroy()
+    {
+        EventManager.onButtonActivated -= ButtonActivated;
+        EventManager.onButtonDeactivated -= ButtonDeactivated;
+    }
+
+    private void OnDisable()
     {
         EventManager.onButtonActivated -= ButtonActivated;
         EventManager.onButtonDeactivated -= ButtonDeactivated;
