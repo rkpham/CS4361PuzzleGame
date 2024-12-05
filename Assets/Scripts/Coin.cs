@@ -10,6 +10,7 @@ public class Coin : MonoBehaviour
     {
         if (collider.gameObject.tag == "Player")
         {
+            ScoreManager.Instance.addScore(5);
             EventManager.RaiseOnCoinPickedUp();
             Destroy(gameObject);
             ScoreManager.Instance.addScore(5); //add 5 points for coin

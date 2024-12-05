@@ -26,6 +26,7 @@ public class Exit : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player" && ExitAllowed)
         {
+            ScoreManager.Instance.addScore(10);
             LevelManager.LoadNextLevel();
         }
     }
