@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject PlayerModel;
     [SerializeField] private ParticleSystem PlayerSmokeParticles;
     [SerializeField] private float Speed;
+    [SerializeField] private ParticleSystem CrashParticles;
 
     private void FixedUpdate()
     {
@@ -24,12 +25,14 @@ public class Player : MonoBehaviour
         }
     }
     private void OnCollisionEnter(Collision collision)
+{
+    if (collision.gameObject.tag == "Hazard")
     {
-        if (collision.gameObject.tag == "Hazard")
-        {
-            Kill();
-        }
+        
+        Kill();
     }
+}
+
 
     private void MovePlayer()
     {
@@ -51,8 +54,19 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void Kill()
+   public void Kill()
     {
+        StartCoroutine(PlayParticlesAndKill());
+    }
+
+    private IEnumerator PlayParticlesAndKill()
+    {
+        if (CrashParticles != null)
+        {
+            CrashParticles.Play(); 
+            yield return new WaitForSeconds(CrashParticles.main.startLifetime.constantMax); // Wait for the particles to finish
+        }
+
         Dead = true;
         EventManager.RaiseOnPlayerDied();
         gameObject.SetActive(false);
