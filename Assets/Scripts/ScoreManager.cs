@@ -5,7 +5,8 @@ using TMPro;
 
 public class ScoreManager : MonoBehaviour
 {
-    public static ScoreManager Instance { get; private set; } //one manager to be called from everything, makes things modular and easier
+    public static ScoreManager Instance { get; private set; } //one manager to becalled from everything
+                                                              //makes things modular and easier
     public TextMeshProUGUI scoreText;
     private int score;
 
