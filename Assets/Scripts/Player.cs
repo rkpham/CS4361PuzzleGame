@@ -2,19 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : GridObject
 {
-    private Vector3 PlayerMovementInput;
-    private float Facing;
-    private bool Dead;
 
-    [SerializeField] private Rigidbody PlayerBody;
-    [SerializeField] private GameObject PlayerModel;
-    [SerializeField] private ParticleSystem PlayerSmokeParticles;
-    [SerializeField] private float Speed;
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            GridManager.instance.RequestMove(this, gridPosition + Vector2Int.right);
+        }
+        else if (Input.GetKeyDown(KeyCode.A))
+        {
+            GridManager.instance.RequestMove(this, gridPosition + Vector2Int.left);
+        }
 
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            GridManager.instance.RequestMove(this, gridPosition + Vector2Int.up);
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            GridManager.instance.RequestMove(this, gridPosition + Vector2Int.down);
+        }
+    }
     private void FixedUpdate()
     {
+<<<<<<< Updated upstream
+        var horizPos = new Vector2(transform.position.x, transform.position.z);
+        var nextHorizPos = Vector2.Lerp(horizPos, gridPosition, 0.9f);
+        transform.position = new Vector3(nextHorizPos.x, 0.0f, nextHorizPos.y);
+=======
         PlayerMovementInput = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
 
         if (!Dead)
@@ -28,39 +46,18 @@ public class Player : MonoBehaviour
         if (collision.gameObject.tag == "Hazard")
         {
             Kill();
+            ScoreManager.Instance.addScore(-10);
         }
+>>>>>>> Stashed changes
     }
 
-    private void MovePlayer()
+    override public void Step()
     {
-        var em = PlayerSmokeParticles.emission;
-        em.enabled = (PlayerBody.velocity.magnitude > .05f);
 
-        Vector3 MoveVector = transform.TransformDirection(PlayerMovementInput) * Speed;
-        PlayerBody.velocity = new Vector3(MoveVector.x, PlayerBody.velocity.y, MoveVector.z);
     }
 
-    private void RotateModel()
+    override public void Move(Vector2Int pos)
     {
-        if (Mathf.Abs(PlayerBody.velocity.x) > 0.05f || Mathf.Abs(PlayerBody.velocity.z) > 0.05f)
-        {
-            float TargetFacing = Mathf.Rad2Deg * Mathf.Atan2(PlayerBody.velocity.x, PlayerBody.velocity.z);
-            Facing = Mathf.LerpAngle(Facing, TargetFacing, Time.fixedDeltaTime * 8f);
-            Vector3 TargetRotation = new Vector3(-90f, Facing + 180f, 0f);
-            PlayerModel.transform.eulerAngles = TargetRotation;
-        }
-    }
-
-    public void Kill()
-    {
-        Dead = true;
-        EventManager.RaiseOnPlayerDied();
-        gameObject.SetActive(false);
-    }
-
-    public void Revive()
-    {
-        Dead = false;
-        gameObject.SetActive(true);
+        gridPosition = pos;
     }
 }

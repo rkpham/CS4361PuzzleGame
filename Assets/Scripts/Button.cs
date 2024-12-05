@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Button : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class Button : MonoBehaviour
             }
             ButtonLight.enabled = true;
             ButtonPress.GetComponent<Renderer>().material = PressedMaterial;
+            ScoreManager.Instance.addScore(20);
         }
     }
 
@@ -36,6 +38,7 @@ public class Button : MonoBehaviour
             }
             ButtonLight.enabled = false;
             ButtonPress.GetComponent<Renderer>().material = InactiveMaterial;
+            ScoreManager.Instance.addScore(-20);
         }
     }
 }
