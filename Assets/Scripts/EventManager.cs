@@ -41,9 +41,9 @@ public class EventManager : MonoBehaviour
 
     public static void RaiseOnButtonDeactivated()
     {
-        if (onButtonActivated != null)
+        if (onButtonDeactivated != null)
         {
-            onButtonActivated();
+            onButtonDeactivated();
         }
     }
 }

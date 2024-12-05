@@ -14,7 +14,6 @@ public class NextLevel : MonoBehaviour
 
     void LoadScene()
     {
-        
         int currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentLevelIndex);
     }
@@ -25,8 +24,7 @@ public class NextLevel : MonoBehaviour
         int nextScene = currentLevel + 1;
         if(nextScene == SceneManager.sceneCountInBuildSettings)
         {
-            nextScene = 0;
-            
+            nextScene = 0;           
         }
         SceneManager.LoadScene(nextScene);
        

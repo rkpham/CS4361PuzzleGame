@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Button : MonoBehaviour
 {
@@ -13,31 +14,31 @@ public class Button : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (!pressed)
-        {
-            pressed = true;
-            EventManager.RaiseOnButtonDeactivated();
-        }
-        
         if (other.gameObject.tag == "Box")
         {
+            if (!pressed)
+            {
+                pressed = true;
+                EventManager.RaiseOnButtonActivated();
+            }
             ButtonLight.enabled = true;
             ButtonPress.GetComponent<Renderer>().material = PressedMaterial;
+            ScoreManager.Instance.addScore(20);
         }
     }
 
     private void OnCollisionExit(Collision other)
     {
-        if (pressed)
-        {
-            pressed = false;
-            EventManager.RaiseOnButtonActivated();
-        }
-
         if (other.gameObject.tag == "Box")
         {
+            if (pressed)
+            {
+                pressed = false;
+                EventManager.RaiseOnButtonDeactivated();
+            }
             ButtonLight.enabled = false;
             ButtonPress.GetComponent<Renderer>().material = InactiveMaterial;
+            ScoreManager.Instance.addScore(-20);
         }
     }
 }
