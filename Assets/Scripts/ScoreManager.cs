@@ -22,7 +22,10 @@ public class ScoreManager : MonoBehaviour
 
     public void addScore(int points)
     {
-        score += points;
+        if (score + points < 0) //won't go into negative
+            score = 0;
+        else
+            score += points;
         updateScoreText();
     }
 

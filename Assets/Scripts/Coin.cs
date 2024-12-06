@@ -10,9 +10,16 @@ public class Coin : MonoBehaviour
     {
         if (collider.gameObject.tag == "Player")
         {
-            ScoreManager.Instance.addScore(5);
             EventManager.RaiseOnCoinPickedUp();
+<<<<<<< Updated upstream
             Destroy(gameObject);
+=======
+            Destroy(gameObject, audioSource.clip.length);
+            if (audioSource != null && audioSource.clip != null)
+            {
+                audioSource.Play();
+            }
+>>>>>>> Stashed changes
             ScoreManager.Instance.addScore(5); //add 5 points for coin
         }
     }

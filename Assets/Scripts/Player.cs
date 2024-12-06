@@ -25,10 +25,15 @@ public class Player : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
+<<<<<<< Updated upstream
         if (collision.gameObject.tag == "Hazard")
         {
             Kill();
         }
+=======
+        ScoreManager.Instance.addScore(-20);
+        Kill();
+>>>>>>> Stashed changes
     }
 
     private void MovePlayer()
